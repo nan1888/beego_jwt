@@ -110,6 +110,7 @@ func (u *User) Insert() {
 		fmt.Println("insert ok")
 	}
 }
+
 func Update_user_role(role_id, username string) error {
 	o := orm.NewOrm()
 	o.Using("default")

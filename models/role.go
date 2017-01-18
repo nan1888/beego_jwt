@@ -116,11 +116,13 @@ func Role_all() ([]Role, error) {
 	return roles, err
 }
 
+/*
 func Auth_role(appid, zoneid string) (int, error) {
 	o := orm.NewOrm()
 	o.Using("default")
 	var roles []Role
-	_, err := o.Raw("select id from oauth_roleid where zoneid = ? adn appid = ?", zoneid, appid).QueryRow(&roles)
+	_, err := o.Raw("select id from oauth_roleid where zoneid = ? adn appid = ?",zoneid,appid).QueryRow(&roles)
 
 	return roles, err
 }
+*/
