@@ -28,6 +28,7 @@ var (
 	ErrSystem       = &ControllerError{500, 10011, "服务器错误", "操作系统错误", ""}
 	ErrExpired      = &ControllerError{400, 10012, "登录已过期", "验证token过期", ""}
 	ErrPermission   = &ControllerError{400, 10013, "没有权限", "没有操作权限", ""}
+	Actionsuccess   = &ControllerError{200, 90000, "操作成功", "操作成功", ""}
 )
 
 func base64Encode(src []byte) []byte {

@@ -16,3 +16,7 @@ type LoginInfo struct {
 	Code     int   `json:"code"`
 	UserInfo *User `json:"user"`
 }
+type ChangeuserroleForm struct {
+	Id       string `form:"id"`
+	Username string `form:"username"`
+}

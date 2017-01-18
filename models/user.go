@@ -110,3 +110,15 @@ func (u *User) Insert() {
 		fmt.Println("insert ok")
 	}
 }
+func Update_user_role(role_id, username string) error {
+	o := orm.NewOrm()
+	o.Using("default")
+	_, err := o.Raw("update user set role_id = ? where username = ?", role_id, username).Exec()
+
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("insert ok")
+	}
+	return err
+}

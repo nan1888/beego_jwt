@@ -24,6 +24,9 @@ type FindpasswdController struct {
 type ChangepasswdController struct {
 	beego.Controller
 }
+type ChangeuserroleController struct {
+	beego.Controller
+}
 
 func (c *LoginController) Post() {
 	form := models.LoginForm{}
@@ -83,7 +86,7 @@ func (c *RegisterController) Post() {
 		c.Data["json"] = "系统错误"
 		c.ServeJSON()
 	}*/
-	c.Data["json"] = "OK"
+	c.Data["json"] = user_encode.Actionsuccess
 	c.ServeJSON()
 }
 
@@ -101,5 +104,25 @@ func (c *FindpasswdController) Post() {
 func (c *ChangepasswdController) Post() {
 
 	c.Data["json"] = user_encode.Err404
+	c.ServeJSON()
+}
+
+func (c *ChangeuserroleController) Post() {
+	form := models.ChangeuserroleForm{}
+	if err := c.ParseForm(&form); err != nil {
+		beego.Debug("ParseLoginForm:", err)
+		//c.Data["json"] = common.NewErrorInfo(ErrInputData)
+		c.Data["json"] = user_encode.ErrInputData
+		c.ServeJSON()
+		return
+	}
+	err := models.Update_user_role(form.Id, form.Username)
+	if err != nil {
+		beego.Error("NewUser:", err)
+		c.Data["json"] = user_encode.ErrSystem
+		c.ServeJSON()
+		return
+	}
+	c.Data["json"] = user_encode.Actionsuccess
 	c.ServeJSON()
 }

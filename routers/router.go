@@ -3,6 +3,7 @@ package routers
 import (
 	"jwt_demo/controllers"
 	"jwt_demo/controllers/action"
+	"jwt_demo/controllers/apps"
 	"jwt_demo/controllers/role"
 	"jwt_demo/controllers/token"
 	"jwt_demo/controllers/user"
@@ -28,4 +29,14 @@ func init() {
 	/*action*/
 	beego.Router("/read_user_list", &action.ReaduserlistController{})
 	beego.Router("/read_one_user", &action.ReadoneuserController{})
+	/*zone*/
+	beego.Router("/addzone", &role.AddzoneController{})
+	beego.Router("/deletezone", &role.DeletezoneController{})
+	beego.Router("/changezone", &role.ChangezoneController{})
+	beego.Router("/listzone", &role.ListzoneController{})
+	/*apps*/
+	beego.Router("/addapps", &apps.AddappsController{})
+	beego.Router("/deleteapps", &apps.DeleteappsController{})
+	beego.Router("/changeapps", &apps.ChangeappsController{})
+	beego.Router("/listapps", &apps.ListappsController{})
 }
