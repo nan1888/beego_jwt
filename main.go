@@ -11,7 +11,7 @@ import (
 
 func main() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:newpasswd@tcp(qmyk.shang-wifi.com:33306)/userrole?charset=utf8", 30, 30)
+	orm.RegisterDataBase("default", "mysql", "root:newpasswd@tcp(localhost:3306)/userrole?charset=utf8", 30, 30)
 	orm.Debug = true
 	beego.Run()
 }
