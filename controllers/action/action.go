@@ -16,6 +16,13 @@ type ReadoneuserController struct {
 }
 
 func (c *ReaduserlistController) Get() {
+	token := c.GetString("token")
+	token_status := user_encode.Token_auth(token, "secret")
+	if token_status == 1 {
+		c.Data["json"] = user_encode.ErrExpired
+		c.ServeJSON()
+		return
+	}
 	users, err := models.Select_all()
 	if err == nil {
 		c.Data["json"] = users

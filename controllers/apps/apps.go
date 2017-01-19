@@ -33,6 +33,12 @@ func (c *AddappsController) Post() {
 		c.ServeJSON()
 		return
 	}
+	token_status := user_encode.Token_auth(form.Token, "secret")
+	if token_status == 1 {
+		c.Data["json"] = user_encode.ErrExpired
+		c.ServeJSON()
+		return
+	}
 	app, err := models.NewApp(&form)
 	if err != nil {
 		beego.Error("NewUser:", err)
@@ -52,6 +58,12 @@ func (c *ChangeappsController) Post() {
 		beego.Debug("ParseLoginForm:", err)
 		//c.Data["json"] = common.NewErrorInfo(ErrInputData)
 		c.Data["json"] = user_encode.ErrInputData
+		c.ServeJSON()
+		return
+	}
+	token_status := user_encode.Token_auth(form.Token, "secret")
+	if token_status == 1 {
+		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
 	}
@@ -77,6 +89,12 @@ func (c *DeleteappsController) Post() {
 		c.ServeJSON()
 		return
 	}
+	token_status := user_encode.Token_auth(form.Token, "secret")
+	if token_status == 1 {
+		c.Data["json"] = user_encode.ErrExpired
+		c.ServeJSON()
+		return
+	}
 	err := models.Apps_delete(form.Id)
 	if err != nil {
 		beego.Error("NewUser:", err)
@@ -89,6 +107,13 @@ func (c *DeleteappsController) Post() {
 }
 
 func (c *ListappsController) Get() {
+	token := c.GetString("token")
+	token_status := user_encode.Token_auth(token, "secret")
+	if token_status == 1 {
+		c.Data["json"] = user_encode.ErrExpired
+		c.ServeJSON()
+		return
+	}
 	apps, err := models.Applist()
 	if err == nil {
 		c.Data["json"] = apps

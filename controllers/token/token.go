@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
-	"github.com/dgrijalva/jwt-go"
 )
 
 type AccesstokenController struct {
@@ -20,11 +19,6 @@ type RefreshtokenController struct {
 	beego.Controller
 }
 
-type Claims struct {
-	Username string `json:"username"`
-	// recommended having
-	jwt.StandardClaims
-}
 type Usertoken struct {
 	Token      string
 	Appid      string
@@ -32,24 +26,6 @@ type Usertoken struct {
 	Express_in int64
 }
 
-func create_token(appid string, secret string) (token string) {
-	expireToken := time.Now().Add(time.Hour * 1).Unix()
-	claims := Claims{
-		appid,
-		jwt.StandardClaims{
-			ExpiresAt: expireToken,
-			Issuer:    appid,
-		},
-	}
-
-	// Create the token using your claims
-	c_token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	// Signs the token with a secret.
-	signedToken, _ := c_token.SignedString([]byte(secret))
-
-	return signedToken
-}
 func (c *AccesstokenController) Get() {
 	/*验证appid 和 secret，下发token*/
 	form := models.CreateTokenForm{}
@@ -61,7 +37,7 @@ func (c *AccesstokenController) Get() {
 	}
 	var T Usertoken
 	T.Express_in = time.Now().Add(time.Hour * 2).Unix()
-	T.Token = create_token(form.Appid, form.Secret)
+	T.Token = user_encode.Create_token(form.Appid, form.Secret)
 	express_in := strconv.FormatInt(T.Express_in, 10)
 	token_model, err := models.NewToken(&form, T.Token, express_in)
 	if err != nil {
