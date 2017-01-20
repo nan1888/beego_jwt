@@ -34,8 +34,12 @@ var (
 	Actionsuccess   = &ControllerError{200, 90000, "操作成功", "操作成功", ""}
 )
 
+const (
+	Select_all_user = "查找全部用户"
+)
+
 type Claims struct {
-	Username string `json:"username"`
+	Appid string `json:"appid"`
 	// recommended having
 	jwt.StandardClaims
 }
@@ -50,7 +54,7 @@ func To_md5(encode string) (decode string) {
 	return string(base64Encode(cipherStr))
 }
 
-func Create_token(appid string, secret string) (token string) {
+func Create_token(appid string, secret string) (string, int64) {
 	expireToken := time.Now().Add(time.Hour * 1).Unix()
 	claims := Claims{
 		appid,
@@ -66,25 +70,18 @@ func Create_token(appid string, secret string) (token string) {
 	// Signs the token with a secret.
 	signedToken, _ := c_token.SignedString([]byte("secret"))
 
-	return signedToken
+	return signedToken, expireToken
 }
 
-func Token_auth(signedToken, secret string) int {
+func Token_auth(signedToken, secret string) (string, error) {
 	token, err := jwt.ParseWithClaims(signedToken, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	})
-	if err != nil {
-		return 1
-	}
 	if claims, ok := token.Claims.(*Claims); ok && token.Valid {
-		now_time := time.Now().Unix()
 		//fmt.Printf("%v %v", claims.Username, claims.StandardClaims.ExpiresAt)
 		//fmt.Println(reflect.TypeOf(claims.StandardClaims.ExpiresAt))
-		if now_time > claims.StandardClaims.ExpiresAt {
-			return 1
-		} else {
-			return 0
-		}
+		//return claims.Appid, err
+		return claims.Appid, err
 	}
-	return 0
+	return "", err
 }

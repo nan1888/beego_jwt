@@ -15,9 +15,9 @@ type Zone struct {
 }
 
 type Role struct {
-	Id         string
-	Rolename   string
-	Roleremark string
+	Id      string
+	App_id  string
+	Zone_id string
 }
 
 func Zone_insert(zonename, zoneremark string) error {
@@ -33,10 +33,10 @@ func Zone_insert(zonename, zoneremark string) error {
 	return err
 }
 
-func Role_insert(rolename, roleremark string) error {
+func Role_insert(appid, zoneid string) error {
 	o := orm.NewOrm()
 	o.Using("default")
-	_, err := o.Raw("insert into oauth_roleid (role_name,role_remark) values (?,?)", rolename, roleremark).Exec()
+	_, err := o.Raw("insert into oauth_roleid (app_id,zone_id) values (?,?)", appid, zoneid).Exec()
 
 	if err != nil {
 		fmt.Println(err)
@@ -116,13 +116,11 @@ func Role_all() ([]Role, error) {
 	return roles, err
 }
 
-/*
-func Auth_role(appid, zoneid string) (int, error) {
+func Auth_role(app_name, appid string) (string, error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	var roles []Role
-	_, err := o.Raw("select id from oauth_roleid where zoneid = ? adn appid = ?",zoneid,appid).QueryRow(&roles)
-
-	return roles, err
+	var role Role
+	err := o.Raw("select oauth_roleid.id  from oauth_roleid inner join oauth_modelid on (oauth_roleid.app_id=oauth_modelid.id) where oauth_modelid.app_name=? and oauth_roleid.zone_id = (select role_id from oauth_user where appid=?)", app_name, appid).QueryRow(&role)
+	//fmt.Println(role.Id)
+	return role.Id, err
 }
-*/

@@ -6,7 +6,6 @@ import (
 	//"fmt"
 	//"reflect"
 	"strconv"
-	"time"
 
 	"github.com/astaxie/beego"
 )
@@ -36,8 +35,7 @@ func (c *AccesstokenController) Get() {
 		return
 	}
 	var T Usertoken
-	T.Express_in = time.Now().Add(time.Hour * 2).Unix()
-	T.Token = user_encode.Create_token(form.Appid, form.Secret)
+	T.Token, T.Express_in = user_encode.Create_token(form.Appid, form.Secret)
 	express_in := strconv.FormatInt(T.Express_in, 10)
 	token_model, err := models.NewToken(&form, T.Token, express_in)
 	if err != nil {

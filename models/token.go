@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/astaxie/beego/orm"
@@ -31,27 +30,6 @@ func (u *User_token) FindByID(name string) (result int, err error) {
 	}
 	return
 }*/
-
-func (u *User_token) AuthToken(token string) (result int, err error) {
-	o := orm.NewOrm()
-	o.Using("default")
-	err = o.Raw("select create_time,express_in from oauth_token where token = ?", token).QueryRow(&u)
-
-	if err != nil {
-		result = 0
-		fmt.Println(err)
-	} else {
-		auth_time := strings.Compare(u.Create_time, u.Express_in)
-		//auth_time := u.Create_time - u.Express_in
-		if auth_time >= 0 {
-			result = 1 //到期
-		} else {
-			result = 2 //未到期
-		}
-		fmt.Println(result)
-	}
-	return
-}
 
 func NewToken(r *CreateTokenForm, token string, express_in string) (u *User_token, err error) {
 	regDate := time.Now().Format("2006-01-02 15:04:05")

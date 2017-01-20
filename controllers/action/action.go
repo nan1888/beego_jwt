@@ -17,9 +17,15 @@ type ReadoneuserController struct {
 
 func (c *ReaduserlistController) Get() {
 	token := c.GetString("token")
-	token_status := user_encode.Token_auth(token, "secret")
-	if token_status == 1 {
+	appid, err := user_encode.Token_auth(token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
+		c.ServeJSON()
+		return
+	}
+	_, err = models.Auth_role(user_encode.Select_all_user, appid)
+	if err != nil {
+		c.Data["json"] = user_encode.ErrPermission
 		c.ServeJSON()
 		return
 	}

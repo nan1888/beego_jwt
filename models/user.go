@@ -58,7 +58,7 @@ func (u *User) CheckPass(pass string) (ok bool, err error) {
 func (u *User) FindByID(name string) (result int, err error) {
 	o := orm.NewOrm()
 	o.Using("default")
-	err = o.Raw("select * from user where username = ?", name).QueryRow(&u)
+	err = o.Raw("select * from oauth_user where username = ?", name).QueryRow(&u)
 
 	if err != nil {
 		fmt.Println(err)
@@ -102,7 +102,7 @@ func (u *User) Insert() {
 	fmt.Println(u.Appid)
 	//_, err = o.Insert(user)
 
-	_, err := o.Raw("insert into user (username,passwd,email,status,create_time,role_id,appid,secret,salt) values (?,?,?,?,?,?,?,?,?)", u.Username, u.Passwd, u.Email, 1, u.Create_time, u.Role_id, u.Appid, u.Secret, u.Salt).Exec()
+	_, err := o.Raw("insert into oauth_user (username,passwd,email,status,create_time,role_id,appid,secret,salt) values (?,?,?,?,?,?,?,?,?)", u.Username, u.Passwd, u.Email, 1, u.Create_time, u.Role_id, u.Appid, u.Secret, u.Salt).Exec()
 
 	if err != nil {
 		fmt.Println(err)
@@ -114,7 +114,7 @@ func (u *User) Insert() {
 func Update_user_role(role_id, username string) error {
 	o := orm.NewOrm()
 	o.Using("default")
-	_, err := o.Raw("update user set role_id = ? where username = ?", role_id, username).Exec()
+	_, err := o.Raw("update oauth_user set role_id = ? where username = ?", role_id, username).Exec()
 
 	if err != nil {
 		fmt.Println(err)

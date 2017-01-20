@@ -9,9 +9,9 @@ type ChangeroleForm struct {
 }
 
 type AddroleForm struct {
-	Rolename   string `form:"zonename"`
-	Roleremark string `form:"zoneremark"`
-	Token      string `form:"token"`
+	Appid  string `form:"appid"`
+	Zoneid string `form:"zoneid"`
+	Token  string `form:"token"`
 }
 
 type DeleteroleForm struct {

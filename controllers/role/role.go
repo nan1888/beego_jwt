@@ -48,13 +48,13 @@ func (c *AddroleController) Post() {
 		c.ServeJSON()
 		return
 	}
-	token_status := user_encode.Token_auth(form.Token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(form.Token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
 	}
-	err := models.Role_insert(form.Rolename, form.Roleremark)
+	err = models.Role_insert(form.Appid, form.Zoneid)
 	if err != nil {
 		beego.Error("NewUser:", err)
 		c.Data["json"] = user_encode.ErrSystem
@@ -75,13 +75,13 @@ func (c *ChangeroleController) Post() {
 		c.ServeJSON()
 		return
 	}
-	token_status := user_encode.Token_auth(form.Token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(form.Token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
 	}
-	err := models.Role_update(form.Id, form.Appid, form.Zoneid)
+	err = models.Role_update(form.Id, form.Appid, form.Zoneid)
 	if err != nil {
 		beego.Error("NewUser:", err)
 		c.Data["json"] = user_encode.ErrSystem
@@ -102,13 +102,13 @@ func (c *DeleteroleController) Post() {
 		c.ServeJSON()
 		return
 	}
-	token_status := user_encode.Token_auth(form.Token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(form.Token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
 	}
-	err := models.Role_delete(form.Id)
+	err = models.Role_delete(form.Id)
 	if err != nil {
 		beego.Error("NewUser:", err)
 		c.Data["json"] = user_encode.ErrSystem
@@ -121,8 +121,8 @@ func (c *DeleteroleController) Post() {
 
 func (c *ListroleController) Get() {
 	token := c.GetString("token")
-	token_status := user_encode.Token_auth(token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
@@ -147,13 +147,13 @@ func (c *AddzoneController) Post() {
 		c.ServeJSON()
 		return
 	}
-	token_status := user_encode.Token_auth(form.Token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(form.Token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
 	}
-	err := models.Zone_insert(form.Zonename, form.Zoneremark)
+	err = models.Zone_insert(form.Zonename, form.Zoneremark)
 	if err != nil {
 		beego.Error("NewUser:", err)
 		c.Data["json"] = user_encode.ErrSystem
@@ -173,13 +173,13 @@ func (c *ChangezoneController) Post() {
 		c.ServeJSON()
 		return
 	}
-	token_status := user_encode.Token_auth(form.Token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(form.Token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
 	}
-	err := models.Zone_update(form.Id, form.Zonename, form.Zoneremark)
+	err = models.Zone_update(form.Id, form.Zonename, form.Zoneremark)
 	if err != nil {
 		beego.Error("NewUser:", err)
 		c.Data["json"] = user_encode.ErrSystem
@@ -200,13 +200,13 @@ func (c *DeletezoneController) Post() {
 		c.ServeJSON()
 		return
 	}
-	token_status := user_encode.Token_auth(form.Token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(form.Token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
 	}
-	err := models.Zone_delete(form.Id)
+	err = models.Zone_delete(form.Id)
 	if err != nil {
 		beego.Error("NewUser:", err)
 		c.Data["json"] = user_encode.ErrSystem
@@ -219,8 +219,8 @@ func (c *DeletezoneController) Post() {
 
 func (c *ListzoneController) Get() {
 	token := c.GetString("token")
-	token_status := user_encode.Token_auth(token, "secret")
-	if token_status == 1 {
+	_, err := user_encode.Token_auth(token, "secret")
+	if err != nil {
 		c.Data["json"] = user_encode.ErrExpired
 		c.ServeJSON()
 		return
